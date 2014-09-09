@@ -51,7 +51,8 @@ public class Main {
 				Integer opcode = opcodes.get(token);
 				if (opcode != null) {
 					operand = st.nextToken().substring(1);
-					System.out.printf("%x%s\n", opcode, operand);
+					String s = String.format("%x%s", opcode, operand);
+					System.out.println(s);
 				}
 			}
 		}
