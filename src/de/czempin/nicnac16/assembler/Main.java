@@ -20,6 +20,7 @@ public class Main {
 				put("LDA", 0b0100);
 				put("STA", 0b0101);
 				put("ADD", 0b0110);
+				put("DIO", 0b1111);
 			}
 		};
 		File file = new File("test1.asm");
@@ -51,10 +52,11 @@ public class Main {
 				case "LDA":
 				case "ADD":
 				case "STA":
+				case "DIO":
 					int opcode = opcodes.get(token);
-					operand = st.nextToken();
+					operand = st.nextToken().substring(1);
 
-					System.out.println(opcode + " " + operand);
+					System.out.printf("%x%s\n",opcode, operand);
 				default:
 					break;
 				}
