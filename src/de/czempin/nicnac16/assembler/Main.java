@@ -3,6 +3,8 @@ package de.czempin.nicnac16.assembler;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.google.common.collect.ImmutableList;
@@ -10,9 +12,16 @@ import com.google.common.io.Files;
 
 public class Main {
 
-	private static final int PAGE_SIZE = 0;
+	private static final int PAGE_SIZE = 0xff;
 
 	public static void main(String[] args) throws IOException {
+		Map<String, Integer> opcodes = new HashMap<String, Integer>() {
+			{
+				put("LDA", 0b0100);
+				put("STA", 0b0101);
+				put("ADD", 0b0110);
+			}
+		};
 		File file = new File("test1.asm");
 		Charset charset = Charset.defaultCharset();
 		ImmutableList<String> lines = Files.asCharSource(file, charset).readLines();
@@ -42,8 +51,10 @@ public class Main {
 				case "LDA":
 				case "ADD":
 				case "STA":
+					int opcode = opcodes.get(token);
 					operand = st.nextToken();
-					System.out.println(token+" "+operand);
+
+					System.out.println(opcode + " " + operand);
 				default:
 					break;
 				}
