@@ -30,6 +30,11 @@ public class Main {
 			String token = null;
 			while (st.hasMoreTokens()){
 				token = st.nextToken();
+				if (token.startsWith("*")){
+					break; //TODO ignore for now.
+				}else if (token.startsWith(";")){
+					break; // ignore comments
+				}
 				System.out.println(token);
 			}
 		}
