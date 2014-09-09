@@ -34,9 +34,12 @@ public class Main {
 					break; //TODO ignore for now.
 				}else if (token.startsWith(";")){
 					break; // ignore comments
+				} else if (token.startsWith(".")){
+					break; // TODO ignore for now
 				}
-				System.out.println(token);
+				System.out.print(token+"-");
 			}
+			System.out.println();
 		}
 	
 	}
