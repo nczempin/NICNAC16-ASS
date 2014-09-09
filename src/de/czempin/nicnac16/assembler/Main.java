@@ -16,32 +16,40 @@ public class Main {
 		File file = new File("test1.asm");
 		Charset charset = Charset.defaultCharset();
 		ImmutableList<String> lines = Files.asCharSource(file, charset).readLines();
-		short [] rom = new short[PAGE_SIZE];
-		short [] ram = new short[PAGE_SIZE];
-		
+		short[] rom = new short[PAGE_SIZE];
+		short[] ram = new short[PAGE_SIZE];
+
 		// not necessary IIRC :-)
 		for (int i = 0; i < PAGE_SIZE; i++) {
 			rom[i] = 0;
 			ram[i] = 0;
 		}
-		
+
 		for (String line : lines) {
 			StringTokenizer st = new StringTokenizer(line);
 			String token = null;
-			while (st.hasMoreTokens()){
+			String operand = null;
+			while (st.hasMoreTokens()) {
 				token = st.nextToken();
-				if (token.startsWith("*")){
-					break; //TODO ignore for now.
-				}else if (token.startsWith(";")){
+				if (token.startsWith("*")) {
+					break; // TODO ignore for now.
+				} else if (token.startsWith(";")) {
 					break; // ignore comments
-				} else if (token.startsWith(".")){
+				} else if (token.startsWith(".")) {
 					break; // TODO ignore for now
 				}
-				System.out.print(token+"-");
+				switch (token) {
+				case "LDA":
+				case "ADD":
+				case "STA":
+					operand = st.nextToken();
+					System.out.println(token+" "+operand);
+				default:
+					break;
+				}
 			}
-			System.out.println();
 		}
-	
+
 	}
 
 }
