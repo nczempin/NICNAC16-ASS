@@ -48,17 +48,10 @@ public class Main {
 				} else if (token.startsWith(".")) {
 					break; // TODO ignore for now
 				}
-				switch (token) {
-				case "LDA":
-				case "ADD":
-				case "STA":
-				case "DIO":
-					int opcode = opcodes.get(token);
+				Integer opcode = opcodes.get(token);
+				if (opcode != null) {
 					operand = st.nextToken().substring(1);
-
-					System.out.printf("%x%s\n",opcode, operand);
-				default:
-					break;
+					System.out.printf("%x%s\n", opcode, operand);
 				}
 			}
 		}
