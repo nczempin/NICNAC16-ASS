@@ -53,7 +53,7 @@ public class Main {
 					operand = st.nextToken().substring(1);
 					String s = String.format("%x%s", opcode, operand);
 					int decimal = Integer.parseInt(s,16);
-					String binary = Integer.toBinaryString(decimal);
+					String binary = String.format("%16s",Integer.toBinaryString(decimal)).replace(" ", "0");;
 					System.out.println(s + "->" + binary);
 				}
 			}
