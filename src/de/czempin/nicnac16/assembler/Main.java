@@ -52,7 +52,9 @@ public class Main {
 				if (opcode != null) {
 					operand = st.nextToken().substring(1);
 					String s = String.format("%x%s", opcode, operand);
-					System.out.println(s);
+					int decimal = Integer.parseInt(s,16);
+					String binary = Integer.toBinaryString(decimal);
+					System.out.println(s + "->" + binary);
 				}
 			}
 		}
