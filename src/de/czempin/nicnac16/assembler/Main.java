@@ -23,7 +23,7 @@ public class Main {
 				put("DIO", 0b1111);
 			}
 		};
-		File file = new File("test1.asm");
+		File file = new File("test2.asm");
 		Charset charset = Charset.defaultCharset();
 		ImmutableList<String> lines = Files.asCharSource(file, charset).readLines();
 		int[] rom = new int[PAGE_SIZE];
@@ -45,15 +45,14 @@ public class Main {
 				if (token.startsWith("*")) {
 					String address = token.substring(3);
 					currentAddress = Integer.parseInt(address, 16);
-					break; // TODO ignore for now.
+					break;
 				} else if (token.startsWith(";")) {
 					break; // ignore comments
 				} else if (token.startsWith(".word")) {
 					String s = st.nextToken().substring(1);;
 					writeToRom(rom, currentAddress, s);
 					currentAddress++;
-
-					break; // TODO ignore for now
+					break;
 				}
 
 				Integer opcode = opcodes.get(token);
@@ -62,6 +61,8 @@ public class Main {
 					String s = String.format("%x%s", opcode, operand);
 					writeToRom(rom, currentAddress, s);
 					currentAddress++;
+				}else {
+					throw new RuntimeException("unknown opcode:"+token);
 				}
 			}
 		}
