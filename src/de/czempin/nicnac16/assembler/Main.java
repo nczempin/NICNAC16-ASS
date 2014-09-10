@@ -17,6 +17,8 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		Map<String, Integer> opcodes = new HashMap<String, Integer>() {
 			{
+				put("NOP", 0b0000);
+				put("JMP", 0b0000);
 				put("LDA", 0b0100);
 				put("STA", 0b0101);
 				put("ADD", 0b0110);
@@ -57,7 +59,11 @@ public class Main {
 
 				Integer opcode = opcodes.get(token);
 				if (opcode != null) {
+					if (st.hasMoreTokens()){
 					operand = st.nextToken().substring(1);
+					}else {
+						operand = "000"; //implicit address, for example for "NOP"
+					}
 					String s = String.format("%x%s", opcode, operand);
 					writeToRom(rom, currentAddress, s);
 					currentAddress++;
