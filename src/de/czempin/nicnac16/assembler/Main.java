@@ -18,7 +18,7 @@ public class Main {
 		Map<String, Integer> opcodes = new HashMap<String, Integer>() {
 			{
 				put("NOP", 0b0000);
-				put("JMP", 0b0000);
+				put("JMP", 0b0001);
 				put("LDA", 0b0100);
 				put("STA", 0b0101);
 				put("ADD", 0b0110);
