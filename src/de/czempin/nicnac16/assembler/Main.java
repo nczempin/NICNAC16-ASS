@@ -41,6 +41,7 @@ public class Main {
 			String operand = null;
 			while (st.hasMoreTokens()) {
 				token = st.nextToken();
+				token = token.trim();
 				if (token.startsWith("*")) {
 					String address = token.substring(3);
 					currentAddress = Integer.parseInt(address, 16);
@@ -48,27 +49,36 @@ public class Main {
 					break; // TODO ignore for now.
 				} else if (token.startsWith(";")) {
 					break; // ignore comments
-				} else if (token.startsWith(".")) {
+				} else if (token.startsWith(".word")) {
+					String s = st.nextToken().substring(1);;
+					writeToRom(rom, currentAddress, s);
+					currentAddress++;
+
 					break; // TODO ignore for now
 				}
+
 				Integer opcode = opcodes.get(token);
 				if (opcode != null) {
 					operand = st.nextToken().substring(1);
 					String s = String.format("%x%s", opcode, operand);
-					int decimal = Integer.parseInt(s, 16);
-
-					String binary = String.format("%16s", Integer.toBinaryString(decimal)).replace(" ", "0");
-					;
-					System.out.println(currentAddress + ": " + s + "->" + binary);
-					rom[currentAddress] = decimal;
+					writeToRom(rom, currentAddress, s);
 					currentAddress++;
 				}
 			}
 		}
-		for (int i = 0; i < PAGE_SIZE; i++) {
-			System.out.println(i + ": " + rom[i]);
-		}
+//		for (int i = 0; i < PAGE_SIZE; i++) {
+//			System.out.println(i + ": " + rom[i]);
+//		}
 
+	}
+
+	private static void writeToRom(int[] rom, int currentAddress, String s) {
+		int decimal = Integer.parseInt(s, 16);
+
+		String binary = String.format("%16s", Integer.toBinaryString(decimal)).replace(" ", "0");
+		
+		System.out.println(currentAddress + ": " + s + "->" + binary);
+		rom[currentAddress] = decimal;
 	}
 
 }
