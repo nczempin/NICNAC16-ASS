@@ -34,7 +34,7 @@ public class Main {
 			rom[i] = 0;
 			ram[i] = 0;
 		}
-
+		int currentAddress = 0;
 		for (String line : lines) {
 			StringTokenizer st = new StringTokenizer(line);
 			String token = null;
@@ -42,6 +42,9 @@ public class Main {
 			while (st.hasMoreTokens()) {
 				token = st.nextToken();
 				if (token.startsWith("*")) {
+					String address = token.substring(3);
+					currentAddress = Integer.parseInt(address, 16);
+					System.out.println("decimal address: "+currentAddress);
 					break; // TODO ignore for now.
 				} else if (token.startsWith(";")) {
 					break; // ignore comments
@@ -53,8 +56,10 @@ public class Main {
 					operand = st.nextToken().substring(1);
 					String s = String.format("%x%s", opcode, operand);
 					int decimal = Integer.parseInt(s,16);
+					
 					String binary = String.format("%16s",Integer.toBinaryString(decimal)).replace(" ", "0");;
-					System.out.println(s + "->" + binary);
+					System.out.println(currentAddress+": "+s + "->" + binary);
+					currentAddress++;
 				}
 			}
 		}
