@@ -26,8 +26,8 @@ public class Main {
 		File file = new File("test1.asm");
 		Charset charset = Charset.defaultCharset();
 		ImmutableList<String> lines = Files.asCharSource(file, charset).readLines();
-		short[] rom = new short[PAGE_SIZE];
-		short[] ram = new short[PAGE_SIZE];
+		int[] rom = new int[PAGE_SIZE];
+		int[] ram = new int[PAGE_SIZE];
 
 		// not necessary IIRC :-)
 		for (int i = 0; i < PAGE_SIZE; i++) {
@@ -44,7 +44,7 @@ public class Main {
 				if (token.startsWith("*")) {
 					String address = token.substring(3);
 					currentAddress = Integer.parseInt(address, 16);
-					System.out.println("decimal address: "+currentAddress);
+					System.out.println("decimal address: " + currentAddress);
 					break; // TODO ignore for now.
 				} else if (token.startsWith(";")) {
 					break; // ignore comments
@@ -55,13 +55,18 @@ public class Main {
 				if (opcode != null) {
 					operand = st.nextToken().substring(1);
 					String s = String.format("%x%s", opcode, operand);
-					int decimal = Integer.parseInt(s,16);
-					
-					String binary = String.format("%16s",Integer.toBinaryString(decimal)).replace(" ", "0");;
-					System.out.println(currentAddress+": "+s + "->" + binary);
+					int decimal = Integer.parseInt(s, 16);
+
+					String binary = String.format("%16s", Integer.toBinaryString(decimal)).replace(" ", "0");
+					;
+					System.out.println(currentAddress + ": " + s + "->" + binary);
+					rom[currentAddress] = decimal;
 					currentAddress++;
 				}
 			}
+		}
+		for (int i = 0; i < PAGE_SIZE; i++) {
+			System.out.println(i + ": " + rom[i]);
 		}
 
 	}
