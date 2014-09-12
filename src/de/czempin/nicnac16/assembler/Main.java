@@ -22,6 +22,7 @@ public class Main {
 				put("LDA", 0b0100);
 				put("STA", 0b0101);
 				put("ADD", 0b0110);
+				put("BAN", 0b1000);
 				put("DIO", 0b1111);
 			}
 		};
