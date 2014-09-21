@@ -1,14 +1,13 @@
 *=$000
-	LDA $010
-	BAN $003
-	LDA $011
+	LDA $007
+	BAN $004
+	LDA $008
 	JMP $005
-	LDA $012	
+	LDA $009 ;4	
 	STA $200
 	JMP $000 ; endless loop
-*=$010
-.word $A234
+.word $6234
 .word $BEEF
-.word $DEAD
+.word $DEAD ;9
 *=$00F
 .word $0000
