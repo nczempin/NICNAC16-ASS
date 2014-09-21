@@ -26,7 +26,7 @@ public class Main {
 				put("DIO", 0b1111);
 			}
 		};
-		File file = new File("test6.asm");
+		File file = new File("test7.asm");
 		Charset charset = Charset.defaultCharset();
 		ImmutableList<String> lines = Files.asCharSource(file, charset).readLines();
 		int[] rom = new int[PAGE_SIZE];
