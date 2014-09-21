@@ -12,7 +12,7 @@ import com.google.common.io.Files;
 
 public class Main {
 
-	private static final int PAGE_SIZE = 0xff;
+	private static final int PAGE_SIZE = 0x100;
 
 	public static void main(String[] args) throws IOException {
 		Map<String, Integer> opcodes = new HashMap<String, Integer>() {
@@ -26,7 +26,7 @@ public class Main {
 				put("DIO", 0b1111);
 			}
 		};
-		File file = new File("test5.asm");
+		File file = new File("test6.asm");
 		Charset charset = Charset.defaultCharset();
 		ImmutableList<String> lines = Files.asCharSource(file, charset).readLines();
 		int[] rom = new int[PAGE_SIZE];
