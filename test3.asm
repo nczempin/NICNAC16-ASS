@@ -1,9 +1,9 @@
 *=$000
-	LDA $010	
+	JMP $003
+.word $ffff
+.word $ffff
+	LDA $001	
 	STA $200
-	LDA $011	
-	STA $200
-	JMP $000 ; endless loop
-*=$010
-	.word $aaaa
-	.word $5555
+	JMP $003 ; endless loop
+*=$00F
+.word $0000
