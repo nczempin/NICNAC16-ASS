@@ -19,6 +19,8 @@ public class Main {
 			{
 				put("NOP", 0b0000);
 				put("JMP", 0b0001);
+				put("BL", 0b0010);
+				put("RET", 0b0011);
 				put("LDA", 0b0100);
 				put("STA", 0b0101);
 				put("ADD", 0b0110);
@@ -26,7 +28,7 @@ public class Main {
 				put("DIO", 0b1111);
 			}
 		};
-		File file = new File("test8.asm");
+		File file = new File("testBL.asm");
 		Charset charset = Charset.defaultCharset();
 		ImmutableList<String> lines = Files.asCharSource(file, charset).readLines();
 		int[] rom = new int[PAGE_SIZE];
