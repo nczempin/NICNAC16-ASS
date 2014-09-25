@@ -1,35 +1,19 @@
 *=$000
-	BL	$00F ; 0: A <- 0
-	STA $10B ; 1: B <- 0
-	ADD $0F1 ; 2: A++
-	ADD $0FF ; 3: NOP
-	ADD $0FF ; 4: NOP
-	ADD $0FF ; 5: NOP
-	ADD $0FF ; 6: NOP
-	ADD $0FF ; 7: NOP
-	ADD $0FF ; 8: NOP
-	ADD $0FF ; 9: NOP
-	ADD $0FF ; a: NOP
-	JMP $017 ; b: NOP
-	ADD $0FF ; c: NOP
-	ADD $0FF ; d: NOP
-	ADD $0FF ; e: NOP
-	ADD $0FF ; f: NOP
-	BL	$007
-	ADD $0FF ; 11: NOP
-	ADD $0FF ; 12: NOP
-	ADD $0FF ; 3: NOP
-	ADD $0FF ; 4: NOP
-	ADD $0FF ; 5: NOP
-	ADD $0FF ; 6: NOP
-	ADD $0FF ; 7: NOP
-	ADD $0FF ; 8: NOP
-	ADD $0FF ; 9: NOP
-	ADD $0FF ; a: NOP
-	ADD $0FF ; b: NOP
-	ADD $0FF ; b: NOP
-	ADD $0FF ; c: NOP
-	ADD $0FF ; d: NOP
-	ADD $0FF ; e: NOP
-	ADD $0FF ; 1f: NOP
-	JMP $001 ; 20: goto 1
+	LDA $042 ; A <- 0
+	BL	$020 ;  subroutine A+=10c5
+	ADD $041 ; A+= 2abc
+	BL	$030 ; subroutine A += 2abc
+	STA $200
+	JMP $005
+*=$020
+	ADD $040
+	RET $000 ; TODO: introduce 0-operand operations
+	JMP $023
+*=$030
+	ADD $041
+	RET $000
+	JMP $033 ; endless
+*=$040
+.word $10C5
+.word $2ABC
+.word $0000
