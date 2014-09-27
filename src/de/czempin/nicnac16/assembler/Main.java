@@ -14,7 +14,12 @@ public class Main {
 
 	private static final int PAGE_SIZE = 0x100;
 
+	@SuppressWarnings("serial")
 	public static void main(String[] args) throws IOException {
+		Map<String, Integer> symbols = new HashMap<String, Integer>() {
+
+		};
+
 		Map<String, Integer> opcodes = new HashMap<String, Integer>() {
 			{
 				put("NOP", 0b0000);
@@ -59,25 +64,36 @@ public class Main {
 					writeToRom(rom, currentAddress, s);
 					currentAddress++;
 					break;
-				} else if (token.endsWith(":")){
-					System.out.println("Label: "+token.substring(0,token.length()-1));
+				} else if (token.endsWith(":")) {
+					String symbol = token.substring(0, token.length() - 1);
+					Integer value = symbols.get(symbol);
+					if (value == null) {
+						symbols.put(symbol, currentAddress);
+					} else {
+						System.out.println("Warning: redefining symbol "+symbol+" ignored");
+					}
+					System.out.println("Label: " + symbol + ", value: " + String.format("%x", currentAddress));
 					break;
 				}
 
 				Integer opcode = opcodes.get(token);
 				if (opcode != null) {
-					System.out.println("opcode: "+token);
+					System.out.println("opcode: " + token);
 					if (st.hasMoreTokens()) {
-						
 
 						String rawOperand = st.nextToken();
-						if (rawOperand.startsWith("$")){
+						if (rawOperand.startsWith("$")) {
 							operand = rawOperand.substring(1);
+						} else {
+							String symbol = rawOperand;
+							System.out.println("new symbol: " + symbol);
+							Integer value = symbols.get(symbol);
+							if (value == null) {
+								operand = "000"; // to be filled in later
+							} else {
+								operand = String.format("%03x", value);
+							}
 						}
-						else{
-							operand = "000"; // to be filled in later
-							System.out.println("new symbol: "+rawOperand);
-						} 
 					} else {
 						operand = "000"; // implicit address, for example for "NOP"
 					}
@@ -92,12 +108,12 @@ public class Main {
 				}
 			}
 		}
-//		for (int i = 0; i < currentAddress; i++) {
-//			String binary = convertTo16bitBinary(rom[i]);
-//
-//			System.out.println(binary);
-//		}
-//
+		 for (int i = 0; i < currentAddress; i++) {
+		 String binary = convertTo16bitBinary(rom[i]);
+		
+		 System.out.println(binary);
+		 }
+		
 	}
 
 	private static void writeToRom(int[] rom, int currentAddress, String s) {

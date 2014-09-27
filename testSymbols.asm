@@ -1,5 +1,9 @@
-*=$000
-	LDA VALUE1:
-*=$0FF
+*=$05
 VALUE1:
 .word $0000
+VALUE2:
+.word $0001
+*=$000
+	LDA VALUE1
+ENDLESS:
+	JMP ENDLESS
