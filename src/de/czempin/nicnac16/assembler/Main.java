@@ -64,15 +64,14 @@ public class Main {
 					break; // ignore comments
 				} else if (token.startsWith(".word")) {
 					String s = st.nextToken().substring(1);
-					;
 					writeToRom(rom, currentAddress, s);
 					currentAddress++;
 					if (currentAddress > maxAddress) {
 						maxAddress = currentAddress;
 					}
 					break;
-				} else if (token.endsWith(":")) {
-					String symbol = token.substring(0, token.length() - 1);
+				} else if (token.endsWith(":")) { //label
+					String symbol = token.substring(0, token.length() - 1); // remove the ":"
 					Integer value = symbols.get(symbol);
 					if (value == null) {
 						symbols.put(symbol, currentAddress);
@@ -96,7 +95,8 @@ public class Main {
 							System.out.println("new symbol: " + symbol);
 							Integer value = symbols.get(symbol);
 							if (value == null) {
-								operand = "000"; // to be filled in later
+								throw new RuntimeException("forward reference: "+symbol);
+//								operand = "000"; // to be filled in later
 							} else {
 								operand = String.format("%03x", value);
 							}
