@@ -1,0 +1,5 @@
+*=$000
+	LDA VALUE1:
+*=$0FF
+VALUE1:
+.word $0000

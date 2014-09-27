@@ -28,7 +28,7 @@ public class Main {
 				put("DIO", 0b1111);
 			}
 		};
-		File file = new File("testBL.asm");
+		File file = new File("testSymbols.asm");
 		Charset charset = Charset.defaultCharset();
 		ImmutableList<String> lines = Files.asCharSource(file, charset).readLines();
 		int[] rom = new int[PAGE_SIZE];
@@ -54,33 +54,50 @@ public class Main {
 				} else if (token.startsWith(";")) {
 					break; // ignore comments
 				} else if (token.startsWith(".word")) {
-					String s = st.nextToken().substring(1);;
+					String s = st.nextToken().substring(1);
+					;
 					writeToRom(rom, currentAddress, s);
 					currentAddress++;
+					break;
+				} else if (token.endsWith(":")){
+					System.out.println("Label: "+token.substring(0,token.length()-1));
 					break;
 				}
 
 				Integer opcode = opcodes.get(token);
 				if (opcode != null) {
-					if (st.hasMoreTokens()){
-					operand = st.nextToken().substring(1);
-					}else {
-						operand = "000"; //implicit address, for example for "NOP"
+					System.out.println("opcode: "+token);
+					if (st.hasMoreTokens()) {
+						
+
+						String rawOperand = st.nextToken();
+						if (rawOperand.startsWith("$")){
+							operand = rawOperand.substring(1);
+						}
+						else{
+							operand = "000"; // to be filled in later
+							System.out.println("new symbol: "+rawOperand);
+						} 
+					} else {
+						operand = "000"; // implicit address, for example for "NOP"
 					}
 					String s = String.format("%x%s", opcode, operand);
+					System.out.println("operand: " + operand);
+					System.out.println("opcode: " + opcode);
+					System.out.println("writing: " + s);
 					writeToRom(rom, currentAddress, s);
 					currentAddress++;
-				}else {
-					throw new RuntimeException("unknown opcode:"+token);
+				} else {
+					throw new RuntimeException("unknown opcode:" + token);
 				}
 			}
 		}
-		for (int i = 0; i < currentAddress; i++) {
-			String binary = convertTo16bitBinary(rom[i]);
-			
-			System.out.println(binary);
-		}
-
+//		for (int i = 0; i < currentAddress; i++) {
+//			String binary = convertTo16bitBinary(rom[i]);
+//
+//			System.out.println(binary);
+//		}
+//
 	}
 
 	private static void writeToRom(int[] rom, int currentAddress, String s) {
