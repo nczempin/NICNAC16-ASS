@@ -45,6 +45,7 @@ public class Main {
 			ram[i] = 0;
 		}
 		int currentAddress = 0;
+		int maxAddress = 0;
 		for (String line : lines) {
 			StringTokenizer st = new StringTokenizer(line);
 			String token = null;
@@ -55,6 +56,9 @@ public class Main {
 				if (token.startsWith("*")) {
 					String address = token.substring(3);
 					currentAddress = Integer.parseInt(address, 16);
+					if (currentAddress > maxAddress) {
+						maxAddress = currentAddress;
+					}
 					break;
 				} else if (token.startsWith(";")) {
 					break; // ignore comments
@@ -63,6 +67,9 @@ public class Main {
 					;
 					writeToRom(rom, currentAddress, s);
 					currentAddress++;
+					if (currentAddress > maxAddress) {
+						maxAddress = currentAddress;
+					}
 					break;
 				} else if (token.endsWith(":")) {
 					String symbol = token.substring(0, token.length() - 1);
@@ -70,7 +77,7 @@ public class Main {
 					if (value == null) {
 						symbols.put(symbol, currentAddress);
 					} else {
-						System.out.println("Warning: redefining symbol "+symbol+" ignored");
+						System.out.println("Warning: redefining symbol " + symbol + " ignored");
 					}
 					System.out.println("Label: " + symbol + ", value: " + String.format("%x", currentAddress));
 					break;
@@ -103,17 +110,20 @@ public class Main {
 					System.out.println("writing: " + s);
 					writeToRom(rom, currentAddress, s);
 					currentAddress++;
+					if (currentAddress > maxAddress) {
+						maxAddress = currentAddress;
+					}
 				} else {
 					throw new RuntimeException("unknown opcode:" + token);
 				}
 			}
 		}
-		 for (int i = 0; i < currentAddress; i++) {
-		 String binary = convertTo16bitBinary(rom[i]);
-		
-		 System.out.println(binary);
-		 }
-		
+		for (int i = 0; i < maxAddress; i++) {
+			String binary = convertTo16bitBinary(rom[i]);
+
+			System.out.println(binary);
+		}
+
 	}
 
 	private static void writeToRom(int[] rom, int currentAddress, String s) {
