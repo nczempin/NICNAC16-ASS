@@ -93,7 +93,7 @@ public class Main {
 						} else {
 							String symbol = rawOperand;
 							System.out.println("new symbol: " + symbol);
-							operand = symbols.handle(symbol);
+							operand = symbols.handle(symbol,currentAddress);
 						}
 					} else {
 						operand = "000"; // implicit address, for example for "NOP"
@@ -112,11 +112,14 @@ public class Main {
 				}
 			}
 		}
-		for (int i = 0; i < maxAddress; i++) {
-			String binary = convertTo16bitBinary(rom[i]);
-
-			System.out.println(binary);
-		}
+		System.out.println("********");
+		symbols.print();
+		
+//		for (int i = 0; i < maxAddress; i++) {
+//			String binary = convertTo16bitBinary(rom[i]);
+//
+//			System.out.println(binary);
+//		}
 
 	}
 
