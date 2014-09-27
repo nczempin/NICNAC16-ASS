@@ -16,7 +16,7 @@ public class Main {
 
 	@SuppressWarnings("serial")
 	public static void main(String[] args) throws IOException {
-		Map<String, Integer> symbols = new HashMap<String, Integer>() {
+		SymbolTable symbols = new SymbolTable(){
 
 		};
 
@@ -93,13 +93,7 @@ public class Main {
 						} else {
 							String symbol = rawOperand;
 							System.out.println("new symbol: " + symbol);
-							Integer value = symbols.get(symbol);
-							if (value == null) {
-								throw new RuntimeException("forward reference: "+symbol);
-//								operand = "000"; // to be filled in later
-							} else {
-								operand = String.format("%03x", value);
-							}
+							operand = symbols.handle(symbol);
 						}
 					} else {
 						operand = "000"; // implicit address, for example for "NOP"
