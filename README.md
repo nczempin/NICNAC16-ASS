@@ -22,7 +22,8 @@ NICNAC16-ASS is an assembler specifically designed for the [NICNAC16 CPU archite
 ## Setup Instructions
 
 ### Prerequisites
-- Java Development Kit (JDK) 8 or higher
+- A C++20 compatible compiler (e.g., `g++`)
+- `make` build tool
 - Basic understanding of assembly language concepts
 
 ### Installation
@@ -32,9 +33,10 @@ NICNAC16-ASS is an assembler specifically designed for the [NICNAC16 CPU archite
    cd NICNAC16-ASS
    ```
 
-2. Compile the source code:
+2. Verify the environment and build the assembler:
    ```
-   javac -d bin -sourcepath src src/de/czempin/nicnac16/assembler/Main.java
+   ./setup.sh
+   make
    ```
 
 ### Running the Assembler
@@ -42,7 +44,7 @@ NICNAC16-ASS is an assembler specifically designed for the [NICNAC16 CPU archite
 
 2. Run the assembler:
    ```
-   java -cp bin de.czempin.nicnac16.assembler.Main program.asm
+   ./nicnac16-asm program.asm
    ```
 
 3. The assembler will generate machine code output that can be loaded into the NICNAC16 CPU or simulator
@@ -62,10 +64,9 @@ NICNAC16-ASS is an assembler specifically designed for the [NICNAC16 CPU archite
 - Not compatible with other CPU architectures
 
 ## Repository Structure
-- `src/de/czempin/nicnac16/assembler/` - Main assembler source code
-  - `Main.java` - Entry point for the assembler
-  - `Label.java` - Label handling for assembly code
-  - `SymbolTable.java` - Symbol table management
+- `src/` - C++20 source code
+  - `main.cpp` - Entry point and assembler implementation
+- `tests/` - Simple regression tests
 
 ## Assembly Language Features
 - Standard instruction set for NICNAC16 architecture
