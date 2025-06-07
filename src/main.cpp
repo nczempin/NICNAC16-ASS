@@ -88,52 +88,23 @@ int main(int argc, char** argv) {
     int currentAddress = 0;
     int maxAddress = 0;
     std::string line;
-    while (std::getline(in,line)) {
+    while (std::getline(in, line)) {
         std::stringstream st(line);
         std::string token;
         while (st >> token) {
-            if (token.rfind("*",0)==0) {
-                std::string hex = token.substr(3);
-                currentAddress = std::stoi(hex,nullptr,16);
-                if (currentAddress > maxAddress) maxAddress = currentAddress;
+            if (token.rfind("*", 0) == 0) {
+                processAddressToken(token, currentAddress, maxAddress);
                 break;
-            } else if (token.rfind(";",0)==0) {
+            } else if (token.rfind(";", 0) == 0) {
                 break;
             } else if (token == ".word") {
-                std::string s; st >> s; s = s.substr(1);
-                writeToRom(rom,currentAddress,s);
-                currentAddress++;
-                if (currentAddress > maxAddress) maxAddress=currentAddress;
+                processWordDirective(st, rom, currentAddress, maxAddress);
                 break;
-            } else if (!token.empty() && token.back()==':') {
-                std::string sym = token.substr(0, token.size()-1);
-                if (!symbols.get(sym)) symbols.put(sym,currentAddress);
-                std::cout << "Label: " << sym << ", value: " << std::hex << currentAddress << std::dec << "\n";
+            } else if (!token.empty() && token.back() == ':') {
+                processLabel(token, symbols, currentAddress);
                 break;
             } else {
-                auto it = opcodes.find(token);
-                if (it!=opcodes.end()) {
-                    std::cout << "opcode: " << token << "\n";
-                    std::string operand="000";
-                    if (st >> token) {
-                        if (!token.empty() && token[0]=='$') {
-                            operand = token.substr(1);
-                        } else {
-                            std::cout << "new symbol: " << token << "\n";
-                            operand = symbols.handle(token,currentAddress);
-                        }
-                    }
-                    std::stringstream out;
-                    out << std::hex << it->second << operand;
-                    std::cout << "operand: " << operand << "\n";
-                    std::cout << "opcode: " << it->second << "\n";
-                    std::cout << "writing: " << out.str() << "\n";
-                    writeToRom(rom,currentAddress,out.str());
-                    currentAddress++;
-                    if (currentAddress > maxAddress) maxAddress=currentAddress;
-                } else {
-                    throw std::runtime_error("unknown opcode: " + token);
-                }
+                processOpcode(token, st, opcodes, symbols, rom, currentAddress, maxAddress);
             }
         }
     }
